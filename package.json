@@ -1,0 +1,42 @@
+{
+  "name": "to-jyutping",
+  "version": "1.0.0",
+  "description": "粵語拼音自動標註工具 Cantonese Pronunciation Automatic Labeling Tool",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CanCLID/to-jyutping.git"
+  },
+  "keywords": [
+    "traditional-chinese",
+    "cantonese",
+    "simplified-chinese",
+    "chinese-characters",
+    "jyutping"
+  ],
+  "author": "CanCLID",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/CanCLID/to-jyutping/issues"
+  },
+  "homepage": "https://github.com/CanCLID/to-jyutping#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "eslint": "^8.8.0",
+    "rollup": "^2.67.2",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "typescript": "^4.5.5"
+  }
+}
