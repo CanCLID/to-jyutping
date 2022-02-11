@@ -8,5 +8,10 @@
     "declarationMap": true,
     "outDir": "./dist"
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "ts-node": {
+    "compilerOptions": {
+      "target": "es6"
+    }
+  }
 }
