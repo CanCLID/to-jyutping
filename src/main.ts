@@ -1,14 +1,7 @@
 import Trie from "./Trie";
-import data from "./dictionary.txt";
+import data from "../dict/trie.txt";
 
-const t = new Trie();
-data
-  .trim()
-  .split("\n")
-  .forEach(a => {
-    const [k, v] = a.split("\t");
-    t.set(k, v);
-  });
+const t = new Trie(data);
 
 export function getJyutpingList(s: string) {
   return t.get(s);
@@ -116,7 +109,7 @@ const tone: StringRecord = {
   6: "˨",
 };
 
-const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(aa?|oe|eo|yu|[eiou]?)(ng|[iumnptk]?)([1-6]?)$/;
+const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]$)(aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?)([1-6])$/;
 
 export function jyutpingToIPA(s: string) {
   return s
