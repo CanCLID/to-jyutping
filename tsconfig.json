@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
     "lib": ["ESNext"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "moduleResolution": "nodenext",
     "outDir": "./dist"
-  },
-  "include": ["./src"],
-  "ts-node": {
-    "compilerOptions": {
-      "target": "es6"
-    }
   }
 }

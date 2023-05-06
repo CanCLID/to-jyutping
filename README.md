@@ -20,18 +20,22 @@ npm install to-jyutping
 
 ```js
 import ToJyutping from "to-jyutping";
-> ToJyutping.getJyutpingList("一瓩係乜嘢嚟㗎？");
-[["一", "jat1"], ["瓩", "cin1 ngaa5"], ["係", "hai6"], ["乜", "mat1"], ["嘢", "je5"], ["嚟", "lai4"], ["㗎", "gaa3"], ["？", null]]
-> ToJyutping.getJyutping("一瓩係乜嘢嚟㗎？");
-"一(jat1)瓩(cin1 ngaa5)係(hai6)乜(mat1)嘢(je5)嚟(lai4)㗎(gaa3)？"
-> ToJyutping.getJyutpingText("一瓩係乜嘢嚟㗎？");
-"jat1 cin1 ngaa5 hai6 mat1 je5 lai4 gaa3"
-> ToJyutping.getIPAList("一瓩係乜嘢嚟㗎？");
-[["一", "jɐt̚˥"], ["瓩", "t͡sʰiːn˥.ŋaː˩˧"], ["係", "hɐi̯˨"], ["乜", "mɐt̚˥"], ["嘢", "jɛː˩˧"], ["嚟", "lɐi̯˨˩"], ["㗎", "kaː˧"], ["？", null]]
-> ToJyutping.getIPA("一瓩係乜嘢嚟㗎？");
-"一[jɐt̚˥]瓩[t͡sʰiːn˥.ŋaː˩˧]係[hɐi̯˨]乜[mɐt̚˥]嘢[jɛː˩˧]嚟[lɐi̯˨˩]㗎[kaː˧]？"
-> ToJyutping.getIPAText("一瓩係乜嘢嚟㗎？");
-"jɐt̚˥.t͡sʰiːn˥.ŋaː˩˧.hɐi̯˨.mɐt̚˥.jɛː˩˧.lɐi̯˨˩.kaː˧"
+> ToJyutping.getJyutpingList("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+[["咁", "gam3"], ["啱", "ngaam1"], ["老", "lou5"], ["世", "sai3"], ["要", "jiu1"], ["求", "kau4"], ["佢", "keoi5"], ["等", "dang2"], ["陣", "zan6"], ["要", "jiu3"], ["開", "hoi1"], ["會", "wui2"], ["，", null], ["剩", "zing6"], ["低", "dai1"], ["嘅", "ge3"], ["嘢", "je5"], ["我", "ngo5"], ["會", "wui5"], ["搞", "gaau2"], ["掂", "dim6"], ["㗎", "gaa3"], ["喇", "laa3"], ["。", null]]
+> ToJyutping.getJyutping("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+"咁(gam3)啱(ngaam1)老(lou5)世(sai3)要(jiu1)求(kau4)佢(keoi5)等(dang2)陣(zan6)要(jiu3)開(hoi1)會(wui2)，剩(zing6)低(dai1)嘅(ge3)嘢(je5)我(ngo5)會(wui5)搞(gaau2)掂(dim6)㗎(gaa3)喇(laa3)。"
+> ToJyutping.getJyutpingText("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+"gam3 ngaam1 lou5 sai3 jiu1 kau4 keoi5 dang2 zan6 jiu3 hoi1 wui2 zing6 dai1 ge3 je5 ngo5 wui5 gaau2 dim6 gaa3 laa3"
+> ToJyutping.getJyutpingCandidates("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+[["咁", ["gam3"]], ["啱", ["ngaam1"]], ["老", ["lou5"]], ["世", ["sai3"]], ["要", ["jiu1", "jiu3", "jiu2"]], ["求", ["kau4"]], ["佢", ["keoi5", "heoi5"]], ["等", ["dang2"]], ["陣", ["zan6"]], ["要", ["jiu3", "jiu2", "jiu1"]], ["開", ["hoi1"]], ["會", ["wui2", "wui5", "wui6", "wui3", "kui2", "kui3"]], ["，", []], ["剩", ["zing6", "sing6"]], ["低", ["dai1"]], ["嘅", ["ge3", "ge2", "koi2", "koi3"]], ["嘢", ["je5"]], ["我", ["ngo5"]], ["會", ["wui5", "wui6", "wui2", "wui3", "kui2", "kui3"]], ["搞", ["gaau2"]], ["掂", ["dim6", "dim3", "dim1"]], ["㗎", ["gaa3", "ga3", "gaa2"]], ["喇", ["laa3", "laa1", "laak3", "laa5", "laat3"]], ["。", []]]
+> ToJyutping.getIPAList("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+[["咁", "kɐm˧"], ["啱", "ŋaːm˥"], ["老", "lou̯˩˧"], ["世", "sɐi̯˧"], ["要", "jiːu̯˥"], ["求", "kʰɐu̯˨˩"], ["佢", "kʰɵy̑˩˧"], ["等", "tɐŋ˧˥"], ["陣", "t͡sɐn˨"], ["要", "jiːu̯˧"], ["開", "hɔːi̯˥"], ["會", "wuːi̯˧˥"], ["，", null], ["剩", "t͡seŋ˨"], ["低", "tɐi̯˥"], ["嘅", "kɛː˧"], ["嘢", "jɛː˩˧"], ["我", "ŋɔː˩˧"], ["會", "wuːi̯˩˧"], ["搞", "kaːu̯˧˥"], ["掂", "tiːm˨"], ["㗎", "kaː˧"], ["喇", "laː˧"], ["。", null]]
+> ToJyutping.getIPA("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+"咁[kɐm˧]啱[ŋaːm˥]老[lou̯˩˧]世[sɐi̯˧]要[jiːu̯˥]求[kʰɐu̯˨˩]佢[kʰɵy̑˩˧]等[tɐŋ˧˥]陣[t͡sɐn˨]要[jiːu̯˧]開[hɔːi̯˥]會[wuːi̯˧˥]，剩[t͡seŋ˨]低[tɐi̯˥]嘅[kɛː˧]嘢[jɛː˩˧]我[ŋɔː˩˧]會[wuːi̯˩˧]搞[kaːu̯˧˥]掂[tiːm˨]㗎[kaː˧]喇[laː˧]。"
+> ToJyutping.getIPAText("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+"kɐm˧.ŋaːm˥.lou̯˩˧.sɐi̯˧.jiːu̯˥.kʰɐu̯˨˩.kʰɵy̑˩˧.tɐŋ˧˥.t͡sɐn˨.jiːu̯˧.hɔːi̯˥.wuːi̯˧˥.t͡seŋ˨.tɐi̯˥.kɛː˧.jɛː˩˧.ŋɔː˩˧.wuːi̯˩˧.kaːu̯˧˥.tiːm˨.kaː˧.laː˧"
+> ToJyutping.getIPACandidates("咁啱老世要求佢等陣要開會，剩低嘅嘢我會搞掂㗎喇。");
+[["咁", ["kɐm˧"]], ["啱", ["ŋaːm˥"]], ["老", ["lou̯˩˧"]], ["世", ["sɐi̯˧"]], ["要", ["jiːu̯˥", "jiːu̯˧", "jiːu̯˧˥"]], ["求", ["kʰɐu̯˨˩"]], ["佢", ["kʰɵy̑˩˧", "hɵy̑˩˧"]], ["等", ["tɐŋ˧˥"]], ["陣", ["t͡sɐn˨"]], ["要", ["jiːu̯˧", "jiːu̯˧˥", "jiːu̯˥"]], ["開", ["hɔːi̯˥"]], ["會", ["wuːi̯˧˥", "wuːi̯˩˧", "wuːi̯˨", "wuːi̯˧", "kʰuːi̯˧˥", "kʰuːi̯˧"]], ["，", []], ["剩", ["t͡seŋ˨", "seŋ˨"]], ["低", ["tɐi̯˥"]], ["嘅", ["kɛː˧", "kɛː˧˥", "kʰɔːi̯˧˥", "kʰɔːi̯˧"]], ["嘢", ["jɛː˩˧"]], ["我", ["ŋɔː˩˧"]], ["會", ["wuːi̯˩˧", "wuːi̯˨", "wuːi̯˧˥", "wuːi̯˧", "kʰuːi̯˧˥", "kʰuːi̯˧"]], ["搞", ["kaːu̯˧˥"]], ["掂", ["tiːm˨", "tiːm˧", "tiːm˥"]], ["㗎", ["kaː˧", "kɐ˧", "kaː˧˥"]], ["喇", ["laː˧", "laː˥", "laːk̚˧", "laː˩˧", "laːt̚˧"]], ["。", []]]
 ```
 
 ### Helper

@@ -1,0 +1,3 @@
+[submodule "rime-cantonese-upstream"]
+	path = rime-cantonese-upstream
+	url = https://github.com/CanCLID/rime-cantonese-upstream

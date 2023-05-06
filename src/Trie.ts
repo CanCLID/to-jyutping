@@ -1,9 +1,9 @@
-type Node = Map<string, Node> & { v?: string };
+type Node = Map<string, Node> & { v?: string[] };
 
 export default class Trie {
   t: Node = new Map();
-  constructor(s?: string) {
-    if (!s) return;
+
+  constructor(s: string) {
     const d = Array.from(s);
     const n = [this.t];
     for (let i = 1; n.length; ) {
@@ -15,19 +15,11 @@ export default class Trie {
         return u;
       }, n[n.length - 1]);
       let p = "";
-      while ((d[i].codePointAt(0) as number) < 123) p += d[i++];
-      if (p.length) f.v = decodeJyutping(p);
+      while ((d[i].codePointAt(0) as number) < 123 || d[i] === "|") p += d[i++];
+      if (p.length) f.v = p.split("|").map(decodeJyutping);
       if (d[i] === "{") i++, n.push(f);
       else if (d[i] === "}") i++, n.pop();
     }
-  }
-
-  set(k: string, v: string) {
-    Array.from(k).reduce((t, c) => {
-      let u = t.get(c);
-      if (!u) t.set(c, (u = new Map()));
-      return u;
-    }, this.t).v = v;
   }
 
   get(s: string) {
@@ -35,32 +27,45 @@ export default class Trie {
     for (let a = Array.from(s), i = 0; i < a.length; ) {
       let t = this.t,
         c = "",
-        k = i + 1;
+        k = i;
       for (let j = i; j < a.length; j++) {
         const u = t.get(a[j]);
         if (!u) break;
         if ((t = u).v) {
-          c = t.v;
-          k = j + 1;
+          c = t.v[0];
+          k = j;
         }
       }
-      if (k === i + 1) r.push([a[i++], c || null]);
-      else for (const d = c.split(" "), n = i; i < k; i++) r.push([a[i], d[i - n]]);
+      if (k === i) r.push([a[i++], c || null]);
+      else for (const d = c.split(" "), n = i; i <= k; i++) r.push([a[i], d[i - n]]);
     }
     return r;
   }
 
-  serialize() {
-    return (function recursive(t: Node) {
-      let result = "";
-      if (t.v) result += encodeJyutping(t.v);
-      if (t.size > +!t.v) result += "{";
-      t.forEach((v, k) => {
-        result += k + recursive(v);
-      });
-      if (t.size > +!t.v) result += "}";
-      return result;
-    })(this.t);
+  getAll(s: string): [string, string[]][] {
+    const t = this.t;
+    const r: [string, string[][]][] = Array.from(s, c => {
+      const v = t.get(c)?.v;
+      return [c, v ? [v] : []];
+    });
+    for (let i = 0; i < r.length; i++) {
+      const u = t.get(r[i][0]);
+      if (!u) continue;
+      for (let t = u, j = i + 1; j < r.length; j++) {
+        const u = t.get(r[j][0]);
+        if (!u) break;
+        if ((t = u).v) {
+          const l = j - i;
+          for (const p of t.v)
+            for (let d = p.split(" "), k = i; k <= j; k++) {
+              const s = r[k][1];
+              if (!(l in s)) s[l] = [d[k - i]];
+              else s[l].push(d[k - i]);
+            }
+        }
+      }
+    }
+    return r.map(([c, s]) => [c, Array.from(new Set(s.reverse().flat()))]);
   }
 }
 
@@ -69,25 +74,7 @@ const nucleus = ["aa", "a", "e", "i", "o", "u"];
 const unit = ["oe", "oen", "oeng", "oet", "oek", "eoi", "eon", "eot", "yu", "yun", "yut", "m", "ng"];
 const terminal = ["", "i", "u", "m", "n", "ng", "p", "t", "k"];
 
-const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]$)(aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?)([1-6])$/;
-
-export function encodeJyutping(s: string) {
-  return s
-    .split(/[\s'.]+/)
-    .map(t => {
-      const [, lead, vowel, final, number] = regex.exec(t) || [];
-      const group = unit.indexOf(vowel + final);
-      const order =
-        +number -
-        1 +
-        (group !== -1 ? group + 54 : terminal.indexOf(final) + nucleus.indexOf(vowel) * 9) * 6 +
-        initial.indexOf(lead) * 402;
-      return String.fromCharCode(order / 90 + 33, (order % 90) + 33);
-    })
-    .join("");
-}
-
-export function decodeJyutping(s: string) {
+function decodeJyutping(s: string) {
   return (s.match(/../g) || [])
     .map(c => {
       const order = (c.charCodeAt(0) - 33) * 90 + (c.charCodeAt(1) - 33);

@@ -22,6 +22,10 @@ export function getJyutpingText(s: string) {
     .join(" ");
 }
 
+export function getJyutpingCandidates(s: string) {
+  return t.getAll(s);
+}
+
 export function getIPAList(s: string) {
   return t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a));
 }
@@ -39,6 +43,10 @@ export function getIPAText(s: string) {
     .map(([, v]) => v && jyutpingToIPA(v))
     .filter(v => v)
     .join(".");
+}
+
+export function getIPACandidates(s: string) {
+  return t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a));
 }
 
 type StringRecord = Record<string, string>;
