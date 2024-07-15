@@ -1,14 +1,7 @@
 import Trie from "./Trie";
-import data from "./dictionary.txt";
+import data from "./trie.txt";
 
-const t = new Trie();
-data
-  .trim()
-  .split("\n")
-  .forEach(a => {
-    const [k, v] = a.split("\t");
-    t.set(k, v);
-  });
+const t = new Trie(data);
 
 export function getJyutpingList(s: string) {
   return t.get(s);
@@ -29,6 +22,10 @@ export function getJyutpingText(s: string) {
     .join(" ");
 }
 
+export function getJyutpingCandidates(s: string) {
+  return t.getAll(s);
+}
+
 export function getIPAList(s: string) {
   return t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a));
 }
@@ -46,6 +43,10 @@ export function getIPAText(s: string) {
     .map(([, v]) => v && jyutpingToIPA(v))
     .filter(v => v)
     .join(".");
+}
+
+export function getIPACandidates(s: string) {
+  return t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a));
 }
 
 type StringRecord = Record<string, string>;
@@ -116,7 +117,7 @@ const tone: StringRecord = {
   6: "˨",
 };
 
-const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(aa?|oe|eo|yu|[eiou]?)(ng|[iumnptk]?)([1-6]?)$/;
+const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]$)(aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?)([1-6])$/;
 
 export function jyutpingToIPA(s: string) {
   return s
@@ -127,7 +128,7 @@ export function jyutpingToIPA(s: string) {
       return (
         (lead && initial[lead]) +
         (group in unit ? unit[group] : (vowel && nucleus[vowel]) + (final && terminal[final])) +
-        (tone && tone[number])
+        (number && tone[number])
       );
     })
     .join(".");
