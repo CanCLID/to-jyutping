@@ -13,8 +13,12 @@ npm install to-jyutping
 ### Via CDN
 
 ```html
-<script src="https://unpkg.com/to-jyutping@1.0.0/dist/index.js" defer></script>
+<script src="https://unpkg.com/to-jyutping@2.0.0/dist/index.js" defer></script>
 ```
+
+### In Other Languages
+
+- [Python (pip) Version](https://www.npmjs.com/package/to-jyutping) ([Repo](https://github.com/CanCLID/to-jyutping))
 
 ## Usage
 
@@ -46,6 +50,15 @@ import ToJyutping from "to-jyutping";
 [["咁", ["kɐm˧", "kɐm˧˥", "kɐm˥", "kɐm˨˩"]], ["啱", ["ŋaːm˥", "aːm˥", "ɐm˥", "ŋɐm˥"]], ["老", ["lou̯˩˧", "lou̯˧˥"]], ["世", ["sɐi̯˧", "sɐi̯˧˥"]], ["要", ["jiːu̯˥", "jiːu̯˧", "jiːu̯˧˥"]], ["求", ["kʰɐu̯˨˩"]], ["佢", ["kʰɵy̑˩˧", "hɵy̑˩˧"]], ["等", ["tɐŋ˧˥"]], ["陣", ["t͡sɐn˨", "t͡sɐn˧˥"]], ["要", ["jiːu̯˧", "jiːu̯˧˥", "jiːu̯˥"]], ["開", ["hɔːi̯˥"]], ["會", ["wuːi̯˧˥", "wuːi̯˩˧", "wuːi̯˨", "wuːi̯˧", "kʰuːi̯˧˥", "kʰuːi̯˧", "kʷʰuːi̯˧˥"]], ["，", []], ["剩", ["t͡seŋ˨", "seŋ˨"]], ["低", ["tɐi̯˥"]], ["嘅", ["kɛː˧", "kɛː˧˥", "kʰɔːi̯˧˥", "kʰɔːi̯˧"]], ["嘢", ["jɛː˩˧", "ɛː˩˧"]], ["我", ["ŋɔː˩˧", "ɔː˩˧"]], ["會", ["wuːi̯˩˧", "wuːi̯˨", "wuːi̯˧˥", "wuːi̯˧", "kʰuːi̯˧˥", "kʰuːi̯˧", "kʷʰuːi̯˧˥"]], ["搞", ["kaːu̯˧˥"]], ["掂", ["tiːm˨", "tiːm˧", "tiːm˥"]], ["㗎", ["kaː˧", "kɐ˧", "kaː˧˥", "kaː˥", "kaː˨˩"]], ["喇", ["laː˧", "laː˥", "laːk̚˧", "laː˩˧", "laːt̚˧"]], ["。", []]]
 ```
 
+In rare cases, the pronunciation of a single character can contain more than one syllable:
+
+```js
+> ToJyutping.getJyutpingList("一瓩");
+[["一", "jat1"], ["瓩", "cin1 ngaa5"]]
+> ToJyutping.getIPAList("一瓩");
+[["一", "jɐt̚˥"], ["瓩", "t͡sʰiːn˥.ŋaː˩˧"]]
+```
+
 ### Helper
 
 ```js
@@ -56,3 +69,4 @@ import ToJyutping from "to-jyutping";
 ```
 
 Note that autocorrection is intentionally not included in this helper, and an error is thrown if strings like `jyt6` are passed into the function.
+Punctuation is ignored in the helper.
