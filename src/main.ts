@@ -51,7 +51,7 @@ export function getIPACandidates(s: string) {
 
 type StringRecord = Record<string, string>;
 
-const initial: StringRecord = {
+const onset: StringRecord = {
   b: "p",
   p: "pʰ",
   m: "m",
@@ -85,7 +85,7 @@ const nucleus: StringRecord = {
   yu: "yː",
 };
 
-const unit: StringRecord = {
+const rhyme: StringRecord = {
   ei: "ei̯",
   ing: "eŋ",
   ik: "ek̚",
@@ -97,7 +97,7 @@ const unit: StringRecord = {
   ng: "ŋ̍",
 };
 
-const terminal: StringRecord = {
+const coda: StringRecord = {
   i: "i̯",
   u: "u̯",
   m: "m",
@@ -117,17 +117,17 @@ const tone: StringRecord = {
   6: "˨",
 };
 
-const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]$)(aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?)([1-6])$/;
+const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]$)((aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?))([1-6]?)$/;
 
 export function jyutpingToIPA(s: string) {
   return s
-    .split(/[\s'.]+/)
+    .toLowerCase()
+    .split(/\W+/)
     .map(t => {
-      const [, lead, vowel, final, number] = regex.exec(t) || [];
-      const group = vowel + final;
+      const [, initial, final, vowel, terminal, number] = regex.exec(t) || [];
       return (
-        (lead && initial[lead]) +
-        (group in unit ? unit[group] : (vowel && nucleus[vowel]) + (final && terminal[final])) +
+        (initial && onset[initial]) +
+        (final in rhyme ? rhyme[final] : (vowel && nucleus[vowel]) + (terminal && coda[terminal])) +
         (number && tone[number])
       );
     })

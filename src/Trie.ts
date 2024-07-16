@@ -4,21 +4,21 @@ export default class Trie {
   t: Node = new Map();
 
   constructor(s: string) {
-    const d = Array.from(s);
+    const a = Array.from(s);
     const n = [this.t];
     for (let i = 1; n.length; ) {
       const k: string[] = [];
-      while (d[i].codePointAt(0)! >= 256) k.push(d[i++]);
+      while (a[i].codePointAt(0)! >= 256) k.push(a[i++]);
       const f = k.reduce((t, c) => {
         const u: Node = new Map();
         t.set(c, u);
         return u;
       }, n[n.length - 1]);
       let p = "";
-      while (d[i].codePointAt(0)! < 123 || d[i] === "|") p += d[i++];
-      if (p.length) f.v = p.split("|").map(decodeJyutping);
-      if (d[i] === "{") i++, n.push(f);
-      else if (d[i] === "}") i++, n.pop();
+      while (a[i].codePointAt(0)! < 123 || a[i] === "|") p += a[i++];
+      if (p) f.v = p.split("|").map(decodeJyutping);
+      if (a[i] === "{") i++, n.push(f);
+      else if (a[i] === "}") i++, n.pop();
     }
   }
 
@@ -49,14 +49,14 @@ export default class Trie {
       return [c, v ? [v] : []];
     });
     for (let i = 0; i < r.length; i++) {
-      const u = t.get(r[i][0]);
+      let u = t.get(r[i][0]);
       if (!u) continue;
-      for (let t = u, j = i + 1; j < r.length; j++) {
-        const u = t.get(r[j][0]);
+      for (let j = i + 1; j < r.length; j++) {
+        u = u.get(r[j][0]);
         if (!u) break;
-        if ((t = u).v) {
+        if (u.v) {
           const l = j - i;
-          for (const p of t.v)
+          for (const p of u.v)
             for (let d = p.split(" "), k = i; k <= j; k++) {
               const s = r[k][1];
               if (l in s) s[l].push(d[k - i]);
@@ -69,21 +69,30 @@ export default class Trie {
   }
 }
 
-const initial = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "ng", "gw", "kw", "w", "h", "z", "c", "s", "j"];
+const onset = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "ng", "gw", "kw", "w", "h", "z", "c", "s", "j"];
 const nucleus = ["aa", "a", "e", "i", "o", "u"];
-const unit = ["oe", "oen", "oeng", "oet", "oek", "eoi", "eon", "eot", "yu", "yun", "yut", "m", "ng"];
-const terminal = ["", "i", "u", "m", "n", "ng", "p", "t", "k"];
+const rhyme = ["oe", "oen", "oeng", "oet", "oek", "eoi", "eon", "eot", "yu", "yun", "yut", "m", "ng"];
+const coda = ["", "i", "u", "m", "n", "ng", "p", "t", "k"];
 
 function decodeJyutping(s: string) {
-  return (s.match(/../g) || [])
-    .map(c => {
-      const order = (c.charCodeAt(0) - 33) * 90 + (c.charCodeAt(1) - 33);
-      const group = ~~((order % 402) / 6);
-      return (
-        initial[~~(order / 402)] +
-        (group >= 54 ? unit[group - 54] : nucleus[~~(group / 9)] + terminal[group % 9]) +
-        ((order % 6) + 1)
-      );
-    })
-    .join(" ");
+  return Array.from(iteratePairs(s), ([x, y]) => {
+    const order = (x.charCodeAt(0) - 33) * 90 + (y.charCodeAt(0) - 33);
+    const final = ~~((order % 402) / 6);
+    return (
+      onset[~~(order / 402)] +
+      (final >= 54 ? rhyme[final - 54] : nucleus[~~(final / 9)] + coda[final % 9]) +
+      ((order % 6) + 1)
+    );
+  }).join(" ");
+}
+
+function* iteratePairs(s: string) {
+  const it = s[Symbol.iterator]();
+  for (;;) {
+    const x = it.next();
+    if (x.done) return;
+    const y = it.next();
+    if (y.done) return;
+    yield [x.value, y.value] as const;
+  }
 }
