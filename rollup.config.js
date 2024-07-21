@@ -8,13 +8,27 @@ import del from "rollup-plugin-delete";
 export default [
   {
     input: "./src/index.ts",
-    output: {
-      file: "./dist/index.js",
-      format: "umd",
-      exports: "named",
-      name: "ToJyutping",
-      sourcemap: true,
-    },
+    output: [
+      {
+        file: "./dist/index.js",
+        format: "umd",
+        exports: "named",
+        name: "ToJyutping",
+        sourcemap: true,
+      },
+      {
+        file: "./dist/index.cjs",
+        format: "cjs",
+        exports: "named",
+        sourcemap: true,
+      },
+      {
+        file: "./dist/index.mjs",
+        format: "es",
+        exports: "named",
+        sourcemap: true,
+      }
+    ],
     plugins: [typescript(), string({ include: "**/*.txt" }), terser()],
   },
   {
