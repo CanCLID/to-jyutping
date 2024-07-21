@@ -3,8 +3,17 @@
   "version": "2.0.0",
   "description": "粵語拼音自動標註工具 Cantonese Pronunciation Automatic Labeling Tool",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "browser": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "browser": "./dist/index.js"
+    }
+  },
   "files": [
     "src",
     "dist",
