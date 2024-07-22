@@ -64,7 +64,7 @@ class JyutpingConverter {
     return converter;
   }
 
-  // For compatibility
+  /** This method exists purely due to compatibility. It is the same across all `JyutpingConverter` instances. */
   jyutpingToIPA = jyutpingToIPA;
 }
 
