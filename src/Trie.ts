@@ -1,6 +1,6 @@
 import data from "./trie.txt";
 
-type Node = Map<string, Node> & { v?: string[]; m?: WeakMap<Trie, string[]> };
+type Node = Map<string, Node> & { v?: string[]; m?: WeakMap<Trie, string[] | null | undefined> };
 
 const root: Node = new Map();
 
@@ -71,7 +71,7 @@ export class Trie {
     return r.map(([c, s]) => [c, Array.from(new Set(s.reverse().flat()))]);
   }
 
-  getValue(n: Node) {
+  getValue(n: Node): string[] | null | undefined {
     return n.v;
   }
 }
@@ -84,7 +84,7 @@ export class CustomizableTrie extends Trie {
     this.#parent = parent;
   }
 
-  customize(k: string, v: string[]) {
+  customize(k: string, v: string[] | null | undefined) {
     (Array.from(k).reduce((t, c) => {
       let u = t.get(c);
       if (!u) t.set(c, (u = new Map()));
@@ -93,8 +93,11 @@ export class CustomizableTrie extends Trie {
   }
 
   override getValue(n: Node) {
+    // return n.m?.get(this) ?? this.#parent.getValue(n);
     // Fast path if `n.m` isn't defined
-    return (n.m && (n.m.get(this) || this.#parent.getValue(n))) || n.v;
+    // The use of `has` and ternary operators are intentional to test if a user
+    // explicitly disallow the entry by setting the value to `null` or `undefined`
+    return n.m ? (n.m.has(this) ? n.m.get(this) : this.#parent.getValue(n)) : n.v;
   }
 }
 

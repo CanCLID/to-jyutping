@@ -53,7 +53,9 @@ class JyutpingConverter {
     return this.#t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a));
   }
 
-  customize(entries: Map<string, string[] | string> | Record<string, string[] | string>) {
+  customize(
+    entries: Map<string, string[] | string | null | undefined> | Record<string, string[] | string | null | undefined>
+  ) {
     const t = new CustomizableTrie(this.#t);
     const converter = new JyutpingConverter(t);
     for (const [k, v] of entries instanceof Map ? entries : Object.entries(entries)) {
