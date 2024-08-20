@@ -18,7 +18,7 @@ npm install to-jyutping
 
 ### In Other Languages
 
-- [Python (pip) Version](https://www.npmjs.com/package/to-jyutping) ([Repo](https://github.com/CanCLID/to-jyutping))
+- [Python (pip) Version](https://pypi.org/project/ToJyutping/) ([Repo](https://github.com/CanCLID/ToJyutping))
 
 ## Usage
 
