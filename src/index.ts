@@ -4,84 +4,84 @@
 import { Trie, CustomizableTrie } from "./Trie";
 
 class JyutpingConverter {
-  #t: Trie;
+	#t: Trie;
 
-  constructor(t: Trie) {
-    this.#t = t;
-  }
+	constructor(t: Trie) {
+		this.#t = t;
+	}
 
-  #getJyutpingList?: (s: string) => [string, string | null][];
-  get getJyutpingList() {
-    return (this.#getJyutpingList ||= s => this.#t.get(s));
-  }
+	#getJyutpingList?: (s: string) => [string, string | null][];
+	get getJyutpingList() {
+		return (this.#getJyutpingList ||= s => this.#t.get(s));
+	}
 
-  #getJyutping?: (s: string) => string;
-  get getJyutping() {
-    return (this.#getJyutping ||= s =>
-      this.#t
-        .get(s)
-        .map(([k, v]) => k + (v ? `(${v})` : ""))
-        .join(""));
-  }
+	#getJyutping?: (s: string) => string;
+	get getJyutping() {
+		return (this.#getJyutping ||= s =>
+			this.#t
+				.get(s)
+				.map(([k, v]) => k + (v ? `(${v})` : ""))
+				.join(""));
+	}
 
-  #getJyutpingText?: (s: string) => string;
-  get getJyutpingText() {
-    return (this.#getJyutpingText ||= s =>
-      this.#t
-        .get(s)
-        .map(([, v]) => v)
-        .filter(v => v)
-        .join(" "));
-  }
+	#getJyutpingText?: (s: string) => string;
+	get getJyutpingText() {
+		return (this.#getJyutpingText ||= s =>
+			this.#t
+				.get(s)
+				.map(([, v]) => v)
+				.filter(v => v)
+				.join(" "));
+	}
 
-  #getJyutpingCandidates?: (s: string) => [string, string[]][];
-  get getJyutpingCandidates() {
-    return (this.#getJyutpingCandidates ||= s => this.#t.getAll(s));
-  }
+	#getJyutpingCandidates?: (s: string) => [string, string[]][];
+	get getJyutpingCandidates() {
+		return (this.#getJyutpingCandidates ||= s => this.#t.getAll(s));
+	}
 
-  #getIPAList?: (s: string) => [string, string | null][];
-  get getIPAList() {
-    return (this.#getIPAList ||= s => this.#t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a)));
-  }
+	#getIPAList?: (s: string) => [string, string | null][];
+	get getIPAList() {
+		return (this.#getIPAList ||= s => this.#t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a)));
+	}
 
-  #getIPA?: (s: string) => string;
-  get getIPA() {
-    return (this.#getIPA ||= s =>
-      this.#t
-        .get(s)
-        .map(([k, v]) => k + (v ? `[${jyutpingToIPA(v)}]` : ""))
-        .join(""));
-  }
+	#getIPA?: (s: string) => string;
+	get getIPA() {
+		return (this.#getIPA ||= s =>
+			this.#t
+				.get(s)
+				.map(([k, v]) => k + (v ? `[${jyutpingToIPA(v)}]` : ""))
+				.join(""));
+	}
 
-  #getIPAText?: (s: string) => string;
-  get getIPAText() {
-    return (this.#getIPAText ||= s =>
-      this.#t
-        .get(s)
-        .map(([, v]) => v && jyutpingToIPA(v))
-        .filter(v => v)
-        .join("."));
-  }
+	#getIPAText?: (s: string) => string;
+	get getIPAText() {
+		return (this.#getIPAText ||= s =>
+			this.#t
+				.get(s)
+				.map(([, v]) => v && jyutpingToIPA(v))
+				.filter(v => v)
+				.join("."));
+	}
 
-  #getIPACandidates?: (s: string) => [string, string[]][];
-  get getIPACandidates() {
-    return (this.#getIPACandidates ||= s => this.#t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a)));
-  }
+	#getIPACandidates?: (s: string) => [string, string[]][];
+	get getIPACandidates() {
+		return (this.#getIPACandidates ||= s => this.#t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a)));
+	}
 
-  #customize?: (entries: Map<string, string[] | string | null | undefined> | Record<string, string[] | string | null | undefined>) => JyutpingConverter;
-  get customize() {
-    return (this.#customize ||= entries => {
-      const t = new CustomizableTrie(this.#t);
-      const converter = new JyutpingConverter(t);
-      for (const [k, v] of entries instanceof Map ? entries : Object.entries(entries)) {
-        t.customize(k, typeof v === "string" ? [v] : v);
-      }
-      return converter;
-    });
-  }
+	#customize?: (entries: Map<string, string[] | string | null | undefined> | Record<string, string[] | string | null | undefined>) => JyutpingConverter;
+	get customize() {
+		return (this.#customize ||= entries => {
+			const t = new CustomizableTrie(this.#t);
+			const converter = new JyutpingConverter(t);
+			for (const [k, v] of entries instanceof Map ? entries : Object.entries(entries)) {
+				t.customize(k, typeof v === "string" ? [v] : v);
+			}
+			return converter;
+		});
+	}
 
-  /** This method exists purely due to compatibility. It is the same across all `JyutpingConverter` instances. */
-  jyutpingToIPA = jyutpingToIPA;
+	/** This method exists purely due to compatibility. It is the same across all `JyutpingConverter` instances. */
+	jyutpingToIPA = jyutpingToIPA;
 }
 
 const ToJyutping = new JyutpingConverter(new Trie());
@@ -89,98 +89,98 @@ const ToJyutping = new JyutpingConverter(new Trie());
 export default ToJyutping;
 
 export const {
-  getJyutpingList,
-  getJyutping,
-  getJyutpingText,
-  getJyutpingCandidates,
-  getIPAList,
-  getIPA,
-  getIPAText,
-  getIPACandidates,
-  customize,
+	getJyutpingList,
+	getJyutping,
+	getJyutpingText,
+	getJyutpingCandidates,
+	getIPAList,
+	getIPA,
+	getIPAText,
+	getIPACandidates,
+	customize,
 } = ToJyutping;
 
 type StringRecord = Record<string, string>;
 
 const onset: StringRecord = {
-  b: "p",
-  p: "pʰ",
-  m: "m",
-  f: "f",
-  d: "t",
-  t: "tʰ",
-  n: "n",
-  l: "l",
-  g: "k",
-  k: "kʰ",
-  ng: "ŋ",
-  gw: "kʷ",
-  kw: "kʷʰ",
-  w: "w",
-  h: "h",
-  z: "t͡s",
-  c: "t͡sʰ",
-  s: "s",
-  j: "j",
+	b: "p",
+	p: "pʰ",
+	m: "m",
+	f: "f",
+	d: "t",
+	t: "tʰ",
+	n: "n",
+	l: "l",
+	g: "k",
+	k: "kʰ",
+	ng: "ŋ",
+	gw: "kʷ",
+	kw: "kʷʰ",
+	w: "w",
+	h: "h",
+	z: "t͡s",
+	c: "t͡sʰ",
+	s: "s",
+	j: "j",
 };
 
 const nucleus: StringRecord = {
-  aa: "aː",
-  a: "ɐ",
-  e: "ɛː",
-  i: "iː",
-  o: "ɔː",
-  u: "uː",
-  oe: "œː",
-  eo: "ɵ",
-  yu: "yː",
+	aa: "aː",
+	a: "ɐ",
+	e: "ɛː",
+	i: "iː",
+	o: "ɔː",
+	u: "uː",
+	oe: "œː",
+	eo: "ɵ",
+	yu: "yː",
 };
 
 const rhyme: StringRecord = {
-  ei: "ei̯",
-  ing: "eŋ",
-  ik: "ek̚",
-  ou: "ou̯",
-  ung: "oŋ",
-  uk: "ok̚",
-  eoi: "ɵy̑",
-  m: "m̩",
-  ng: "ŋ̍",
+	ei: "ei̯",
+	ing: "eŋ",
+	ik: "ek̚",
+	ou: "ou̯",
+	ung: "oŋ",
+	uk: "ok̚",
+	eoi: "ɵy̑",
+	m: "m̩",
+	ng: "ŋ̍",
 };
 
 const coda: StringRecord = {
-  i: "i̯",
-  u: "u̯",
-  m: "m",
-  n: "n",
-  ng: "ŋ",
-  p: "p̚",
-  t: "t̚",
-  k: "k̚",
+	i: "i̯",
+	u: "u̯",
+	m: "m",
+	n: "n",
+	ng: "ŋ",
+	p: "p̚",
+	t: "t̚",
+	k: "k̚",
 };
 
 const tone: StringRecord = {
-  1: "˥",
-  2: "˧˥",
-  3: "˧",
-  4: "˨˩",
-  5: "˩˧",
-  6: "˨",
+	1: "˥",
+	2: "˧˥",
+	3: "˧",
+	4: "˨˩",
+	5: "˩˧",
+	6: "˨",
 };
 
 const regex = /^([gk]w?|ng|[bpmfdtnlhwzcsj]?)(?![1-6]?$)((aa?|oe?|eo?|y?u|i?)(ng|[iumnptk]?))([1-6]?)$/;
 
 export function jyutpingToIPA(s: string) {
-  return s
-    .toLowerCase()
-    .split(/\W+/)
-    .map(t => {
-      const [, initial, final, vowel, terminal, number] = regex.exec(t) || [];
-      return (
-        (initial && onset[initial]) +
-        (final in rhyme ? rhyme[final] : (vowel && nucleus[vowel]) + (terminal && coda[terminal])) +
-        (number && tone[number])
-      );
-    })
-    .join(".");
+	return s
+		.toLowerCase()
+		.split(/\W+/)
+		.map(t => {
+			const [, initial, final, vowel, terminal, number] = regex.exec(t) || [];
+			return (
+				(initial && onset[initial])
+				+ (final in rhyme ? rhyme[final] : (vowel && nucleus[vowel]) + (terminal && coda[terminal]))
+				+ (number && tone[number])
+			);
+		})
+		.join(".");
 }

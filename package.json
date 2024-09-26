@@ -1,55 +1,55 @@
 {
-  "name": "to-jyutping",
-  "version": "2.0.0",
-  "description": "粵語拼音自動標註工具 Cantonese Pronunciation Automatic Labeling Tool",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "src",
-    "dist",
-    "!src/global.d.ts",
-    "!src/trie.txt"
-  ],
-  "scripts": {
-    "build": "rollup -c",
-    "start": "rollup -c -w",
-    "prepublish": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CanCLID/to-jyutping.git"
-  },
-  "keywords": [
-    "cantonese",
-    "chinese",
-    "chinese-characters",
-    "jyutping",
-    "linguistics",
-    "natural-language-processing",
-    "nlp",
-    "romanization",
-    "simplified-chinese",
-    "traditional-chinese"
-  ],
-  "author": "CanCLID",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/CanCLID/to-jyutping/issues"
-  },
-  "homepage": "https://github.com/CanCLID/to-jyutping#readme",
-  "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
-    "@typescript-eslint/parser": "^7.16.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-no-array-concat": "^0.1.2",
-    "rollup": "^4.18.1",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-dts": "^6.1.1",
-    "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.5.3"
-  }
+	"name": "to-jyutping",
+	"version": "2.0.0",
+	"description": "粵語拼音自動標註工具 Cantonese Pronunciation Automatic Labeling Tool",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"src",
+		"dist",
+		"!src/global.d.ts",
+		"!src/trie.txt"
+	],
+	"scripts": {
+		"build": "rollup -c",
+		"start": "rollup -c -w",
+		"prepublish": "npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CanCLID/to-jyutping.git"
+	},
+	"keywords": [
+		"cantonese",
+		"chinese",
+		"chinese-characters",
+		"jyutping",
+		"linguistics",
+		"natural-language-processing",
+		"nlp",
+		"romanization",
+		"simplified-chinese",
+		"traditional-chinese"
+	],
+	"author": "CanCLID",
+	"license": "BSD-2-Clause",
+	"bugs": {
+		"url": "https://github.com/CanCLID/to-jyutping/issues"
+	},
+	"homepage": "https://github.com/CanCLID/to-jyutping#readme",
+	"devDependencies": {
+		"@rollup/plugin-terser": "^0.4.4",
+		"@typescript-eslint/eslint-plugin": "^7.16.0",
+		"@typescript-eslint/parser": "^7.16.0",
+		"eslint": "^8.57.0",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-no-array-concat": "^0.1.2",
+		"rollup": "^4.18.1",
+		"rollup-plugin-delete": "^2.0.0",
+		"rollup-plugin-dts": "^6.1.1",
+		"rollup-plugin-string": "^3.0.0",
+		"rollup-plugin-typescript2": "^0.36.0",
+		"typescript": "^5.5.3"
+	}
 }
