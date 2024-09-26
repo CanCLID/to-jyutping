@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
 import { Trie, CustomizableTrie } from "./Trie";
+import { formatIPAText, formatRomanizationText } from "./utils";
 
 class JyutpingConverter {
 	#t: Trie;
@@ -26,12 +27,7 @@ class JyutpingConverter {
 
 	#getJyutpingText?: (s: string) => string;
 	get getJyutpingText() {
-		return (this.#getJyutpingText ||= s =>
-			this.#t
-				.get(s)
-				.map(([, v]) => v)
-				.filter(v => v)
-				.join(" "));
+		return (this.#getJyutpingText ||= s => formatRomanizationText(s, this.getJyutpingList));
 	}
 
 	#getJyutpingCandidates?: (s: string) => [string, string[]][];
@@ -55,12 +51,7 @@ class JyutpingConverter {
 
 	#getIPAText?: (s: string) => string;
 	get getIPAText() {
-		return (this.#getIPAText ||= s =>
-			this.#t
-				.get(s)
-				.map(([, v]) => v && jyutpingToIPA(v))
-				.filter(v => v)
-				.join("."));
+		return (this.#getIPAText ||= s => formatIPAText(s, this.getIPAList));
 	}
 
 	#getIPACandidates?: (s: string) => [string, string[]][];
