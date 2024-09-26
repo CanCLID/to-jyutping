@@ -5,22 +5,44 @@ type Node = Map<string, Node> & { v?: string[]; m?: WeakMap<Trie, string[] | nul
 
 const root: Node = new Map();
 
-const a = Array.from(data);
-const n = [root];
+let s = Array.from(data);
+let n = [root];
+let l = [0];
 for (let i = 1; n.length;) {
-	const k: string[] = [];
-	while (a[i].codePointAt(0)! >= 256) k.push(a[i++]);
-	const f = k.reduce((t, c) => {
-		const u: Node = new Map();
-		t.set(c, u);
-		return u;
-	}, n[n.length - 1]);
-	let p = "";
-	while (a[i].codePointAt(0)! < 123 || a[i] === "|") p += a[i++];
-	if (p) f.v = p.split("|").map(decodeJyutping);
-	if (a[i] === "{") i++, n.push(f);
-	else if (a[i] === "}") i++, n.pop();
+	let p = n[n.length - 1];
+	let d = l[l.length - 1];
+	while (s[i].codePointAt(0)! >= 256) {
+		const u = new Map();
+		p.set(s[i++], u);
+		p = u;
+		d++;
+	}
+	const v: string[] = [];
+	while (s[i].codePointAt(0)! < 123) {
+		const w: string[] = [];
+		for (let c = 0; c < d;) {
+			w.push(decodeJyutping((s[i++].charCodeAt(0) - 33) * 90 + (s[i++].charCodeAt(0) - 33)));
+			if (s[i] === "~") i++;
+			else c++;
+		}
+		v.push(w.join(" "));
+	}
+	if (v.length) p.v = v;
+	if (s[i] === "{") {
+		i++;
+		n.push(p);
+		l.push(d);
+	}
+	else if (s[i] === "}") {
+		i++;
+		n.pop();
+		l.pop();
+	}
 }
+// Release memory
+n = undefined!;
+l = undefined!;
+s = undefined!;
 
 export class Trie {
 	get(s: string) {
