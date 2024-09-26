@@ -1,3 +1,6 @@
+// ESLint Bug?
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import { Trie, CustomizableTrie } from "./Trie";
 
 class JyutpingConverter {
@@ -7,61 +10,74 @@ class JyutpingConverter {
     this.#t = t;
   }
 
-  getJyutpingList(s: string) {
-    return this.#t.get(s);
+  #getJyutpingList?: (s: string) => [string, string | null][];
+  get getJyutpingList() {
+    return (this.#getJyutpingList ||= s => this.#t.get(s));
   }
 
-  getJyutping(s: string) {
-    return this.#t
-      .get(s)
-      .map(([k, v]) => k + (v ? `(${v})` : ""))
-      .join("");
+  #getJyutping?: (s: string) => string;
+  get getJyutping() {
+    return (this.#getJyutping ||= s =>
+      this.#t
+        .get(s)
+        .map(([k, v]) => k + (v ? `(${v})` : ""))
+        .join(""));
   }
 
-  getJyutpingText(s: string) {
-    return this.#t
-      .get(s)
-      .map(([, v]) => v)
-      .filter(v => v)
-      .join(" ");
+  #getJyutpingText?: (s: string) => string;
+  get getJyutpingText() {
+    return (this.#getJyutpingText ||= s =>
+      this.#t
+        .get(s)
+        .map(([, v]) => v)
+        .filter(v => v)
+        .join(" "));
   }
 
-  getJyutpingCandidates(s: string) {
-    return this.#t.getAll(s);
+  #getJyutpingCandidates?: (s: string) => [string, string[]][];
+  get getJyutpingCandidates() {
+    return (this.#getJyutpingCandidates ||= s => this.#t.getAll(s));
   }
 
-  getIPAList(s: string) {
-    return this.#t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a));
+  #getIPAList?: (s: string) => [string, string | null][];
+  get getIPAList() {
+    return (this.#getIPAList ||= s => this.#t.get(s).map(a => ((a[1] &&= jyutpingToIPA(a[1])), a)));
   }
 
-  getIPA(s: string) {
-    return this.#t
-      .get(s)
-      .map(([k, v]) => k + (v ? `[${jyutpingToIPA(v)}]` : ""))
-      .join("");
+  #getIPA?: (s: string) => string;
+  get getIPA() {
+    return (this.#getIPA ||= s =>
+      this.#t
+        .get(s)
+        .map(([k, v]) => k + (v ? `[${jyutpingToIPA(v)}]` : ""))
+        .join(""));
   }
 
-  getIPAText(s: string) {
-    return this.#t
-      .get(s)
-      .map(([, v]) => v && jyutpingToIPA(v))
-      .filter(v => v)
-      .join(".");
+  #getIPAText?: (s: string) => string;
+  get getIPAText() {
+    return (this.#getIPAText ||= s =>
+      this.#t
+        .get(s)
+        .map(([, v]) => v && jyutpingToIPA(v))
+        .filter(v => v)
+        .join("."));
   }
 
-  getIPACandidates(s: string) {
-    return this.#t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a));
+  #getIPACandidates?: (s: string) => [string, string[]][];
+  get getIPACandidates() {
+    return (this.#getIPACandidates ||= s => this.#t.getAll(s).map(a => ((a[1] = a[1].map(jyutpingToIPA)), a)));
   }
 
-  customize(
-    entries: Map<string, string[] | string | null | undefined> | Record<string, string[] | string | null | undefined>
-  ) {
-    const t = new CustomizableTrie(this.#t);
-    const converter = new JyutpingConverter(t);
-    for (const [k, v] of entries instanceof Map ? entries : Object.entries(entries)) {
-      t.customize(k, typeof v === "string" ? [v] : v);
-    }
-    return converter;
+  #customize?: (entries: Map<string, string[] | string | null | undefined> | Record<string, string[] | string | null | undefined>) => JyutpingConverter;
+  get customize() {
+    return (this.#customize ||= entries => {
+      const t = new CustomizableTrie(this.#t);
+      const converter = new JyutpingConverter(t);
+      for (const [k, v] of entries instanceof Map ? entries : Object.entries(entries)) {
+        t.customize(k, typeof v === "string" ? [v] : v);
+      }
+      return converter;
+    });
   }
 
   /** This method exists purely due to compatibility. It is the same across all `JyutpingConverter` instances. */
@@ -72,17 +88,17 @@ const ToJyutping = new JyutpingConverter(new Trie());
 
 export default ToJyutping;
 
-export const getJyutpingList = ToJyutping.getJyutpingList.bind(ToJyutping);
-export const getJyutping = ToJyutping.getJyutping.bind(ToJyutping);
-export const getJyutpingText = ToJyutping.getJyutpingText.bind(ToJyutping);
-export const getJyutpingCandidates = ToJyutping.getJyutpingCandidates.bind(ToJyutping);
-
-export const getIPAList = ToJyutping.getIPAList.bind(ToJyutping);
-export const getIPA = ToJyutping.getIPA.bind(ToJyutping);
-export const getIPAText = ToJyutping.getIPAText.bind(ToJyutping);
-export const getIPACandidates = ToJyutping.getIPACandidates.bind(ToJyutping);
-
-export const customize = ToJyutping.customize.bind(ToJyutping);
+export const {
+  getJyutpingList,
+  getJyutping,
+  getJyutpingText,
+  getJyutpingCandidates,
+  getIPAList,
+  getIPA,
+  getIPAText,
+  getIPACandidates,
+  customize,
+} = ToJyutping;
 
 type StringRecord = Record<string, string>;
 
