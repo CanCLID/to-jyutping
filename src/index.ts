@@ -72,7 +72,7 @@ class JyutpingConverter {
 	}
 
 	/** This method exists purely due to compatibility. It is the same across all `JyutpingConverter` instances. */
-	jyutpingToIPA = jyutpingToIPA;
+	readonly jyutpingToIPA = jyutpingToIPA;
 }
 
 const ToJyutping = new JyutpingConverter(new Trie());
