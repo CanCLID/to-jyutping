@@ -18,6 +18,13 @@
 	},
 	"plugins": ["@typescript-eslint", "import", "no-array-concat"],
 	"ignorePatterns": ["node_modules", "dist"],
+	"settings": {
+		"import/resolver": {
+			"typescript-bun": {
+				"alwaysTryTypes": true
+			}
+		}
+	},
 	"rules": {
 		"default-case-last": "error",
 		"eqeqeq": "error",
