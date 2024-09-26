@@ -13,7 +13,7 @@ npm install to-jyutping
 ### Via CDN
 
 ```html
-<script src="https://unpkg.com/to-jyutping@2.0.0/dist/index.js" defer></script>
+<script src="https://unpkg.com/to-jyutping@3.0.0" defer></script>
 ```
 
 ### In Other Languages
