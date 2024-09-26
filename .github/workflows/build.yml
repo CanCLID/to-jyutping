@@ -1,0 +1,33 @@
+name: Build
+on:
+    workflow_call:
+    pull_request:
+    push:
+        branches: [main]
+    release:
+        types: [created]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Latest Commit
+              uses: actions/checkout@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+            - name: Install Dependencies
+              run: bun i --frozen-lockfile
+            - name: Build Project
+              run: bun run build
+            - name: Run Tests
+              run: bun run test
+            - name: Setup Node
+              if: github.event_name == 'release' && github.event.action == 'created'
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  registry-url: https://registry.npmjs.org
+            - name: Publish Package
+              if: github.event_name == 'release' && github.event.action == 'created'
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+              run: npm publish
