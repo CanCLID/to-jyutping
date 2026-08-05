@@ -168,6 +168,39 @@ Converters can be chained without affecting each other:
 >   ```
 >   Notice how the library automatically deduplicates the values for you.
 
+### Loading Persistent Custom Entries from JSON
+
+For applications that need the same adjustments across runs, custom entries can be kept in a JSON file and loaded when the application starts. See [`examples/custom-dictionary.json`](examples/custom-dictionary.json) and [`examples/custom-dictionary.mjs`](examples/custom-dictionary.mjs) for a complete Node.js example.
+
+The JSON file must contain an object whose keys are character strings and whose values use the same forms accepted by `customize`:
+
+- A string sets one preferred pronunciation.
+- An array sets ordered pronunciation candidates. The first candidate is preferred.
+- `null` excludes a matching built-in entry so that the converter falls back to shorter matches.
+
+```json
+{
+  "上堂": null,
+  "分數": "fan6 sou3",
+  "到": ["dou2", "dou3"]
+}
+```
+
+Load the entries and create an independent converter:
+
+```js
+import { readFile } from "node:fs/promises";
+import ToJyutping from "to-jyutping";
+
+const entries = JSON.parse(await readFile("custom-dictionary.json", "utf8"));
+const converter = ToJyutping.customize(entries);
+
+console.log(converter.getJyutpingText("上堂終於講到分數"));
+// soeng6 tong4 zung1 jyu1 gong2 dou2 fan6 sou3
+```
+
+In a browser, the same JSON object can be loaded with `fetch()` instead of `readFile()`. This file is a user-maintained overlay, not a replacement for the compiled dictionary distributed with to-jyutping. The same matching limitations described above still apply, including the priority given to longer built-in entries.
+
 ### Helper
 
 ```js
